@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Completed Sits</title>
-  <meta name="description" content="Completed house & pet sits (Aussie House Sitters) — Victoria (Melbourne + regional)." />
+  <title>Completed Sits — SMH Sitters</title>
+  <meta name="description" content="Completed house & pet sits (via Aussie House Sitters) — Victoria (Melbourne + regional)." />
 
-  <!-- Your theme -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Fonts (only if you aren't already loading them elsewhere) -->
+  <!-- If you already load these fonts on other pages, you can remove these 3 lines -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -19,11 +18,11 @@
   <div class="bg-blob blob-1"></div>
   <div class="bg-blob blob-2"></div>
 
-  <!-- Top bar -->
+  <!-- Top bar (matches your site structure) -->
   <div class="topbar">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">🐾</div>
-      <div class="brand-text">Your Sitters</div>
+    <a class="brand" href="index.html#home">
+      <div class="brand-mark">🏡</div>
+      <div class="brand-text">SMH Sitters</div>
     </a>
 
     <button class="nav-btn" id="navBtn" aria-label="Menu">
@@ -32,14 +31,13 @@
       <span class="nav-btn-bar"></span>
     </button>
 
-    <!-- Update these link filenames to match your site -->
     <nav class="nav" id="nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a class="pill" href="completed-sits.html">Completed Sits</a>
+      <a href="index.html#availability">Availability</a>
+      <a href="index.html#about">About</a>
       <a href="reviews.html">Reviews</a>
-      <a href="photos.html">Photos</a>
-      <a href="availability.html">Availability</a>
+      <a class="pill" href="completed-sits.html">Completed Sits</a>
+      <a href="index.html#photos">Photos</a>
+      <a href="index.html#contact">Contact</a>
     </nav>
   </div>
 
@@ -50,7 +48,7 @@
         <p>A record of our completed house & pet sits (via Aussie House Sitters).</p>
       </div>
 
-      <!-- Summary -->
+      <!-- Summary (reuses your reviews summary styling) -->
       <div class="card reviews-summary" style="margin-top:12px;">
         <div class="summary-grid">
           <div class="summary-item">
@@ -72,12 +70,13 @@
         </div>
 
         <p class="tiny">
-          Note: This page lists completed sits from our Aussie House Sitters history (dates and locations shown as per the platform).
+          Dates and locations are listed as shown in our Aussie House Sitters history.
+          (Night counts are the number of nights between start and end dates.)
         </p>
 
         <div class="contact-mini">
-          <a class="btn small" href="reviews.html">Read Reviews</a>
-          <a class="btn small primary" href="availability.html">Check Availability</a>
+          <a class="btn small" href="reviews.html">Read reviews</a>
+          <a class="btn small primary" href="index.html#availability">Check availability</a>
         </div>
       </div>
 
@@ -96,7 +95,7 @@
               <div class="tl-sub">16 Aug 2025 → 25 Aug 2025</div>
               <div class="tl-tags">
                 <span class="tag">9 nights</span>
-                <span class="tag">1 week 2 nights</span>
+                <span class="tag">Swiss Shepherd “Oslo”</span>
               </div>
             </div>
           </div>
@@ -144,7 +143,7 @@
               <div class="tl-sub">6 Jan 2025 → 28 Jan 2025</div>
               <div class="tl-tags">
                 <span class="tag">22 nights</span>
-                <span class="tag">3 weeks 1 night</span>
+                <span class="tag">Cats + chickens</span>
               </div>
             </div>
           </div>
@@ -178,7 +177,7 @@
               <div class="tl-sub">17 Oct 2024 → 15 Nov 2024</div>
               <div class="tl-tags">
                 <span class="tag">29 nights</span>
-                <span class="tag">4 weeks 1 night</span>
+                <span class="tag">Puppy + older dog</span>
               </div>
             </div>
           </div>
@@ -225,20 +224,19 @@
               <div class="tl-sub">20 Dec 2023 → 23 Jan 2024</div>
               <div class="tl-tags">
                 <span class="tag">34 nights</span>
-                <span class="tag">4 weeks 6 nights</span>
-                <span class="tag">Platform history</span>
+                <span class="tag">House + garden + 2 dogs</span>
               </div>
             </div>
           </div>
         </div>
 
         <p class="tiny">
-          Want this page to show photos? Easy: we can add an optional thumbnail per sit (and click-through to the Photos page).
+          Want thumbnails here? We can add an optional photo per sit and link each card to your Photos section.
         </p>
       </div>
 
       <div class="footer tiny">
-        © <span id="year"></span> Your Sitters • Completed sits listed from Aussie House Sitters history
+        © <span id="year"></span> SMH Sitters • Completed sits listed from Aussie House Sitters history
       </div>
     </section>
   </main>
@@ -249,18 +247,12 @@
     const nav = document.getElementById('nav');
 
     navBtn?.addEventListener('click', () => nav.classList.toggle('open'));
+    nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
 
-    // Close menu when clicking a link (mobile)
-    nav?.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => nav.classList.remove('open'));
-    });
-
-    // Close menu when clicking outside (mobile)
     document.addEventListener('click', (e) => {
       if (!nav.contains(e.target) && !navBtn.contains(e.target)) nav.classList.remove('open');
     });
 
-    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
