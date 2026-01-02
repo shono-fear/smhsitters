@@ -100,18 +100,17 @@
                 <span class="tag">Swiss Shepherd “Oslo”</span>
               </div>
               <div class="thumbs">
-                <a class="thumb" href="images/sits/IMG_0775_Medium.jpeg" target="_blank" rel="noopener">
+                <a class="thumb" href="images/sits/IMG_0775_Medium.jpeg" data-lightbox>
                   <img src="images/sits/IMG_0775_Medium.jpeg" alt="Apollo Bay sit photo 1" loading="lazy">
                 </a>
-
-                <a class="thumb" href="images/sits/IMG_3135_Medium.jpeg" target="_blank" rel="noopener">
+                <a class="thumb" href="images/sits/IMG_3135_Medium.jpeg" data-lightbox>
                   <img src="images/sits/IMG_3135_Medium.jpeg" alt="Apollo Bay sit photo 2" loading="lazy">
                 </a>
-
-                <a class="thumb" href="images/sits/IMG_2620_Medium.jpeg" target="_blank" rel="noopener">
+                <a class="thumb" href="images/sits/IMG_2620_Medium.jpeg" data-lightbox>
                   <img src="images/sits/IMG_2620_Medium.jpeg" alt="Apollo Bay sit photo 3" loading="lazy">
                 </a>
               </div>
+
             </div>
           </div>
 
@@ -272,3 +271,55 @@
   </script>
 </body>
 </html>
+
+
+
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" alt="">
+  </div>
+</div>
+
+<script>
+  (function () {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbClose = document.getElementById('lightboxClose');
+
+    function openLightbox(src, alt) {
+      lbImg.src = src;
+      lbImg.alt = alt || 'Expanded photo';
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('a[data-lightbox]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const img = a.querySelector('img');
+        openLightbox(a.getAttribute('href'), img ? img.alt : '');
+      });
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb) closeLightbox(); // click outside image
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+</script>
