@@ -429,3 +429,42 @@ h1{
   cursor: pointer;
 }
 .lightbox-close:hover{ background: rgba(255,255,255,0.18); }
+
+
+/* Lightbox navigation */
+.lightbox-btn{
+  position:absolute;
+  top:50%;
+  transform: translateY(-50%);
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.12);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
+.lightbox-btn:hover{ background: rgba(255,255,255,0.18); }
+.lightbox-prev{ left:14px; }
+.lightbox-next{ right:14px; }
+
+.lightbox-counter{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform: translateX(-50%);
+  padding:8px 12px;
+  border-radius:999px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(0,0,0,0.25);
+  color:#fff;
+  font-weight:900;
+  font-size:13px;
+}
+
+@media (max-width: 520px){
+  .lightbox-btn{ width:44px; height:44px; border-radius:14px; }
+}
