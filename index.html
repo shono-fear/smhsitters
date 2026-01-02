@@ -1,1 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMH Sitters — House & Pet Sitting</title>
+  <meta name="description" content="Friendly, reliable house & pet sitters. See reviews, past sits, and availability." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Home">
+      <span class="brand-mark" aria-hidden="true">🏡🐾</span>
+      <span class="brand-text">SMH Sitters</span>
+    </a>
+
+    <button class="nav-btn" id="navBtn" aria-label="Open menu" aria-expanded="false">
+      <span class="nav-btn-bar"></span>
+      <span class="nav-btn-bar"></span>
+      <span class="nav-btn-bar"></span>
+    </button>
+
+    <nav class="nav" id="nav">
+      <a href="#availability">Availability</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#sits">House Sits</a>
+      <a href="#gallery">Photos</a>
+      <a class="pill" href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="home" class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-badge">✨ Fun • Caring • Reliable</div>
+        <h1>
+          House & Pet Sitting<br/>
+          with calm, friendly vibes
+        </h1>
+        <p class="sub">
+          We’re a couple who look after homes and pets like they’re our own.
+          Returning owners can check our <strong>availability</strong> anytime.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#availability">Check availability</a>
+          <a class="btn" href="#reviews">Read reviews</a>
+        </div>
+
+        <div class="hero-chips" aria-label="Highlights">
+          <span class="chip">📸 Photo updates</span>
+          <span class="chip">🧼 Tidy homes</span>
+          <span class="chip">🦮 Pet routines</span>
+          <span class="chip">💬 Great comms</span>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="kawaii-card">
+          <div class="kawaii-face">
+            <span class="eye"></span><span class="eye"></span>
+            <span class="mouth"></span>
+          </div>
+          <div class="kawaii-lines">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="kawaii-paws">
+            <span>🐾</span><span>🐾</span><span>🐾</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVAILABILITY -->
+    <section id="availability" class="section">
+      <div class="section-title">
+        <h2>Availability</h2>
+        <p>See open dates at a glance — then message us to lock in a sit.</p>
+      </div>
+
+      <div class="card calendar-card">
+        <div class="calendar-top">
+          <div class="calendar-note">
+            <strong>Tip:</strong> Share dates + location + pet details for a quick yes/no.
+          </div>
+          <a class="btn small primary" href="#contact">Request a booking</a>
+        </div>
+
+        <!-- Paste your Google Calendar embed URL into the iframe src -->
+        <div class="calendar-frame">
+          <iframe
+            title="Availability calendar"
+            src="PASTE_YOUR_GOOGLE_CALENDAR_EMBED_URL_HERE"
+            frameborder="0"
+            scrolling="no"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="tiny">
+          Use a dedicated “Availability” calendar and only mark unavailable blocks (so no personal details appear).
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="section-title">
+        <h2>About us</h2>
+        <p>Warm, professional, and easy to trust.</p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>Hi! We’re [Name] & [Name]</h3>
+          <p>
+            We’ve completed <strong>[X]+</strong> successful house sits and we’re known for clear communication,
+            great pet care, and leaving homes spotless.
+          </p>
+          <ul class="list">
+            <li>✅ Experienced with cats & dogs (including high-energy breeds)</li>
+            <li>✅ Regular photo updates</li>
+            <li>✅ Calm, respectful, tidy sitters</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>What we cover</h3>
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="mini-ico">🐶</div>
+              <div>
+                <div class="mini-title">Pet care</div>
+                <div class="mini-sub">Walks, play, routines, meds if needed.</div>
+              </div>
+            </div>
+            <div class="mini">
+              <div class="mini-ico">🏠</div>
+              <div>
+                <div class="mini-title">Home care</div>
+                <div class="mini-sub">Secure, clean, and well looked-after.</div>
+              </div>
+            </div>
+            <div class="mini">
+              <div class="mini-ico">🌿</div>
+              <div>
+                <div class="mini-title">Garden basics</div>
+                <div class="mini-sub">Watering / simple upkeep (as agreed).</div>
+              </div>
+            </div>
+            <div class="mini">
+              <div class="mini-ico">💬</div>
+              <div>
+                <div class="mini-title">Communication</div>
+                <div class="mini-sub">Updates so you can relax while away.</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="section">
+      <div class="section-title">
+        <h2>Reviews</h2>
+        <p>A few words from homeowners we’ve helped.</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card review">
+          <div class="stars" aria-label="5 star rating">★★★★★</div>
+          <p>
+            “Exceptional and trustworthy sitters… fantastic with our dog… regular updates… house left immaculate.”
+          </p>
+          <div class="reviewer">— Damian, Apollo Bay VIC</div>
+        </article>
+
+        <article class="card review">
+          <div class="stars" aria-label="5 star rating">★★★★★</div>
+          <p>“Add another review here.”</p>
+          <div class="reviewer">— [Name], [Location]</div>
+        </article>
+
+        <article class="card review">
+          <div class="stars" aria-label="5 star rating">★★★★★</div>
+          <p>“Add another review here.”</p>
+          <div class="reviewer">— [Name], [Location]</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOUSE SITS -->
+    <section id="sits" class="section">
+      <div class="section-title">
+        <h2>Previous house sits</h2>
+        <p>Quick snapshot of recent sits (add as many as you like).</p>
+      </div>
+
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div class="tl-content">
+              <div class="tl-title">Apollo Bay, VIC</div>
+              <div class="tl-sub">16 Aug – 25 Aug 2025 • Swiss Shepherd (Oslo)</div>
+              <div class="tl-tags">
+                <span class="tag">Pet care</span>
+                <span class="tag">Home care</span>
+                <span class="tag">Updates</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div class="tl-content">
+              <div class="tl-title">[Location]</div>
+              <div class="tl-sub">[Dates] • [Pets]</div>
+              <div class="tl-tags">
+                <span class="tag">Pet care</span>
+                <span class="tag">Garden</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section">
+      <div class="section-title">
+        <h2>Photos</h2>
+        <p>Drop your favourite pet moments here 🐾</p>
+      </div>
+
+      <div class="gallery">
+        <!-- Add your own photos by creating /images and uploading files -->
+        <!-- Example: images/oslo-1.jpg -->
+        <figure class="g-item"><div class="ph">Add photo</div></figure>
+        <figure class="g-item"><div class="ph">Add photo</div></figure>
+        <figure class="g-item"><div class="ph">Add photo</div></figure>
+        <figure class="g-item"><div class="ph">Add photo</div></figure>
+      </div>
+
+      <div class="tiny">
+        Create a folder called <strong>images</strong>, upload photos, then replace these placeholders with &lt;img&gt; tags.
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>Message us with dates + location + pet details and we’ll reply ASAP.</p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>Booking request</h3>
+          <p class="tiny">This opens your email app with a pre-filled message.</p>
+          <a class="btn primary" id="mailtoBtn" href="#">✉️ Email booking request</a>
+
+          <div class="contact-mini">
+            <div><strong>Email:</strong> <span id="emailText">yourname@email.com</span></div>
+            <button class="btn small" id="copyEmail" type="button">Copy email</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>What to include</h3>
+          <ul class="list">
+            <li>📍 Location (suburb/state)</li>
+            <li>📅 Dates needed</li>
+            <li>🐾 Pets + routines + any meds</li>
+            <li>🏠 House notes (plants, bins, etc.)</li>
+          </ul>
+          <div classа="tiny"></div>
+          <div class="tiny">Avoid posting your exact address publicly—share it privately once confirmed.</div>
+        </article>
+      </div>
+
+      <footer class="footer">
+        <div class="tiny">© <span id="year"></span> SMH Sitters • Built on GitHub Pages</div>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
 
