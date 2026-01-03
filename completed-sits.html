@@ -273,130 +273,130 @@
 
 
   <script>
-  (function () {
-    let lb, lbImg, lbClose, lbPrev, lbNext, lbCounter;
-    let items = [];
-    let idx = 0;
-    let touchStartX = null;
+    (function () {
+      let lb, lbImg, lbClose, lbPrev, lbNext, lbCounter;
+      let items = [];
+      let idx = 0;
+      let touchStartX = null;
 
-    function ensureLightbox(){
-      if (lb) return;
+      function ensureLightbox(){
+        if (lb) return;
 
-      lb = document.createElement('div');
-      lb.className = 'lightbox';
-      lb.id = 'lightbox';
-      lb.innerHTML = `
-        <button class="lightbox-close" aria-label="Close">✕</button>
-        <button class="lightbox-btn lightbox-prev" aria-label="Previous">‹</button>
-        <button class="lightbox-btn lightbox-next" aria-label="Next">›</button>
-        <div class="lightbox-inner"><img alt=""></div>
-        <div class="lightbox-counter" aria-hidden="true"></div>
-      `;
-      document.body.appendChild(lb);
+        lb = document.createElement('div');
+        lb.className = 'lightbox';
+        lb.id = 'lightbox';
+        lb.innerHTML = `
+          <button class="lightbox-close" aria-label="Close">✕</button>
+          <button class="lightbox-btn lightbox-prev" aria-label="Previous">‹</button>
+          <button class="lightbox-btn lightbox-next" aria-label="Next">›</button>
+          <div class="lightbox-inner"><img alt=""></div>
+          <div class="lightbox-counter" aria-hidden="true"></div>
+        `;
+        document.body.appendChild(lb);
 
-      lbClose   = lb.querySelector('.lightbox-close');
-      lbPrev    = lb.querySelector('.lightbox-prev');
-      lbNext    = lb.querySelector('.lightbox-next');
-      lbCounter = lb.querySelector('.lightbox-counter');
-      lbImg     = lb.querySelector('img');
+        lbClose   = lb.querySelector('.lightbox-close');
+        lbPrev    = lb.querySelector('.lightbox-prev');
+        lbNext    = lb.querySelector('.lightbox-next');
+        lbCounter = lb.querySelector('.lightbox-counter');
+        lbImg     = lb.querySelector('img');
 
-      lbClose.addEventListener('click', closeLightbox);
-      lbPrev.addEventListener('click', () => show(idx - 1));
-      lbNext.addEventListener('click', () => show(idx + 1));
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', () => show(idx - 1));
+        lbNext.addEventListener('click', () => show(idx + 1));
 
-      // Click outside image closes
-      lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+        // Click outside image closes
+        lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
 
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (!lb || !lb.classList.contains('open')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') show(idx - 1);
-        if (e.key === 'ArrowRight') show(idx + 1);
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (!lb || !lb.classList.contains('open')) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowLeft') show(idx - 1);
+          if (e.key === 'ArrowRight') show(idx + 1);
+        });
+
+        // Swipe navigation (touch)
+        lb.addEventListener('touchstart', (e) => {
+          if (!lb.classList.contains('open')) return;
+          touchStartX = e.touches && e.touches[0] ? e.touches[0].clientX : null;
+        }, { passive: true });
+
+        lb.addEventListener('touchend', (e) => {
+          if (!lb.classList.contains('open') || touchStartX == null) return;
+          const endX = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null;
+          if (endX == null) return;
+
+          const dx = endX - touchStartX;
+          touchStartX = null;
+
+          // threshold: tweak if you want
+          if (Math.abs(dx) > 50) {
+            if (dx < 0) show(idx + 1);  // swipe left = next
+            else show(idx - 1);         // swipe right = prev
+          }
+        }, { passive: true });
+      }
+
+      function show(i){
+        if (!items.length) return;
+
+        // wrap-around
+        idx = (i + items.length) % items.length;
+
+        lbImg.src = items[idx].src;
+        lbImg.alt = items[idx].alt || 'Expanded photo';
+        lbCounter.textContent = `${idx + 1} / ${items.length}`;
+
+        // Hide arrows if only one image
+        const many = items.length > 1;
+        lbPrev.style.display = many ? '' : 'none';
+        lbNext.style.display = many ? '' : 'none';
+        lbCounter.style.display = many ? '' : 'none';
+      }
+
+      function openLightbox(groupItems, startIndex){
+        ensureLightbox();
+        items = groupItems;
+        show(startIndex);
+
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox(){
+        if (!lb) return;
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden', 'true');
+        lbImg.src = '';
+        document.body.style.overflow = '';
+        items = [];
+        idx = 0;
+      }
+
+      // Event delegation: click any thumbnail inside .thumbs
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('.thumbs a.thumb');
+        if (!a) return;
+
+        e.preventDefault();
+
+        const group = a.closest('.thumbs');
+        const links = Array.from(group.querySelectorAll('a.thumb'));
+
+        const groupItems = links.map(link => {
+          const img = link.querySelector('img');
+          return {
+            src: link.getAttribute('href'),
+            alt: img ? img.alt : ''
+          };
+        });
+
+        const startIndex = Math.max(0, links.indexOf(a));
+        openLightbox(groupItems, startIndex);
       });
-
-      // Swipe navigation (touch)
-      lb.addEventListener('touchstart', (e) => {
-        if (!lb.classList.contains('open')) return;
-        touchStartX = e.touches && e.touches[0] ? e.touches[0].clientX : null;
-      }, { passive: true });
-
-      lb.addEventListener('touchend', (e) => {
-        if (!lb.classList.contains('open') || touchStartX == null) return;
-        const endX = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null;
-        if (endX == null) return;
-
-        const dx = endX - touchStartX;
-        touchStartX = null;
-
-        // threshold: tweak if you want
-        if (Math.abs(dx) > 50) {
-          if (dx < 0) show(idx + 1);  // swipe left = next
-          else show(idx - 1);         // swipe right = prev
-        }
-      }, { passive: true });
-    }
-
-    function show(i){
-      if (!items.length) return;
-
-      // wrap-around
-      idx = (i + items.length) % items.length;
-
-      lbImg.src = items[idx].src;
-      lbImg.alt = items[idx].alt || 'Expanded photo';
-      lbCounter.textContent = `${idx + 1} / ${items.length}`;
-
-      // Hide arrows if only one image
-      const many = items.length > 1;
-      lbPrev.style.display = many ? '' : 'none';
-      lbNext.style.display = many ? '' : 'none';
-      lbCounter.style.display = many ? '' : 'none';
-    }
-
-    function openLightbox(groupItems, startIndex){
-      ensureLightbox();
-      items = groupItems;
-      show(startIndex);
-
-      lb.classList.add('open');
-      lb.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox(){
-      if (!lb) return;
-      lb.classList.remove('open');
-      lb.setAttribute('aria-hidden', 'true');
-      lbImg.src = '';
-      document.body.style.overflow = '';
-      items = [];
-      idx = 0;
-    }
-
-    // Event delegation: click any thumbnail inside .thumbs
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('.thumbs a.thumb');
-      if (!a) return;
-
-      e.preventDefault();
-
-      const group = a.closest('.thumbs');
-      const links = Array.from(group.querySelectorAll('a.thumb'));
-
-      const groupItems = links.map(link => {
-        const img = link.querySelector('img');
-        return {
-          src: link.getAttribute('href'),
-          alt: img ? img.alt : ''
-        };
-      });
-
-      const startIndex = Math.max(0, links.indexOf(a));
-      openLightbox(groupItems, startIndex);
-    });
-  })();
-</script>
+    })();
+  </script>
 
 
 
