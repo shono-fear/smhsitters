@@ -431,13 +431,25 @@ h1{
 .lightbox-close:hover{ background: rgba(255,255,255,0.18); }
 
 
-/* Lightbox navigation */
-.lightbox-btn{
+/* Lightbox bottom navigation */
+.lightbox-bottom{
   position:absolute;
-  top:50%;
-  transform: translateY(-50%);
-  width:48px;
-  height:48px;
+  left:50%;
+  bottom:14px;
+  transform: translateX(-50%);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:999px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+}
+
+.lightbox-btn{
+  width:42px;
+  height:42px;
   border-radius:16px;
   border: 1px solid rgba(255,255,255,0.28);
   background: rgba(255,255,255,0.12);
@@ -446,25 +458,17 @@ h1{
   cursor:pointer;
   display:grid;
   place-items:center;
+  line-height:1;
 }
 .lightbox-btn:hover{ background: rgba(255,255,255,0.18); }
-.lightbox-prev{ left:14px; }
-.lightbox-next{ right:14px; }
 
 .lightbox-counter{
-  position:absolute;
-  bottom:14px;
-  left:50%;
-  transform: translateX(-50%);
-  padding:8px 12px;
-  border-radius:999px;
-  border: 1px solid rgba(255,255,255,0.22);
-  background: rgba(0,0,0,0.25);
   color:#fff;
   font-weight:900;
   font-size:13px;
+  padding:0 2px;
 }
 
 @media (max-width: 520px){
-  .lightbox-btn{ width:44px; height:44px; border-radius:14px; }
+  .lightbox-btn{ width:40px; height:40px; border-radius:14px; }
 }
