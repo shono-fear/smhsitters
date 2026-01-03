@@ -274,7 +274,7 @@
 
   <script>
     (function () {
-      let lb, lbImg, lbClose, lbPrev, lbNext, lbCounter;
+      let lb, lbImg, lbClose;
       let items = [];
       let idx = 0;
       let touchStartX = null;
@@ -288,24 +288,13 @@
         lb.innerHTML = `
           <button class="lightbox-close" aria-label="Close">✕</button>
           <div class="lightbox-inner"><img alt=""></div>
-
-          <div class="lightbox-bottom" aria-hidden="true">
-            <button class="lightbox-btn lightbox-prev" aria-label="Previous">‹</button>
-            <div class="lightbox-counter"></div>
-            <button class="lightbox-btn lightbox-next" aria-label="Next">›</button>
-          </div>
         `;
         document.body.appendChild(lb);
 
-        lbClose   = lb.querySelector('.lightbox-close');
-        lbPrev    = lb.querySelector('.lightbox-prev');
-        lbNext    = lb.querySelector('.lightbox-next');
-        lbCounter = lb.querySelector('.lightbox-counter');
-        lbImg     = lb.querySelector('img');
+        lbClose = lb.querySelector('.lightbox-close');
+        lbImg   = lb.querySelector('img');
 
         lbClose.addEventListener('click', closeLightbox);
-        lbPrev.addEventListener('click', () => show(idx - 1));
-        lbNext.addEventListener('click', () => show(idx + 1));
 
         // Click outside image closes
         lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
@@ -318,7 +307,7 @@
           if (e.key === 'ArrowRight') show(idx + 1);
         });
 
-        // Swipe navigation (touch)
+        // Swipe navigation
         lb.addEventListener('touchstart', (e) => {
           if (!lb.classList.contains('open')) return;
           touchStartX = e.touches && e.touches[0] ? e.touches[0].clientX : null;
@@ -341,16 +330,10 @@
 
       function show(i){
         if (!items.length) return;
-
-        idx = (i + items.length) % items.length;
+        idx = (i + items.length) % items.length; // wrap
 
         lbImg.src = items[idx].src;
         lbImg.alt = items[idx].alt || 'Expanded photo';
-        lbCounter.textContent = `${idx + 1} / ${items.length}`;
-
-        // Hide bottom nav if only one image
-        const bottom = lb.querySelector('.lightbox-bottom');
-        bottom.style.display = items.length > 1 ? '' : 'none';
       }
 
       function openLightbox(groupItems, startIndex){
@@ -373,7 +356,7 @@
         idx = 0;
       }
 
-      // Click any thumbnail inside .thumbs
+      // Click any thumbnail inside .thumbs (group = that sit only)
       document.addEventListener('click', (e) => {
         const a = e.target.closest('.thumbs a.thumb');
         if (!a) return;
@@ -393,6 +376,7 @@
       });
     })();
   </script>
+
 
 
 
