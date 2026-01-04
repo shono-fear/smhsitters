@@ -18,8 +18,8 @@
       --radius: 18px;
 
       /* Logo sizing */
-      --logoW: 420px;     /* centered size (desktop) */
-      --logoScaleToCorner: 0.30; /* how small it becomes top-left */
+      --logoW: 420px;              /* centered size (desktop) */
+      --logoScaleToCorner: 0.30;   /* how small it becomes top-left */
     }
 
     *{ box-sizing:border-box; }
@@ -43,7 +43,7 @@
         top 700ms cubic-bezier(.2,.9,.2,1),
         left 700ms cubic-bezier(.2,.9,.2,1),
         transform 700ms cubic-bezier(.2,.9,.2,1);
-      z-index: 20;
+      z-index: 100; /* above everything during intro */
       display: inline-flex;
       align-items: center;
       gap: 12px;
@@ -58,7 +58,7 @@
       height: auto;
       display:block;
       filter: drop-shadow(0 14px 34px rgba(0,0,0,.12));
-      transition: filter 250ms ease;
+      transition: filter 250ms ease, opacity 250ms ease;
     }
 
     .brand:hover img{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
@@ -70,10 +70,6 @@
       left: var(--pad);
       transform: translate(0, 0) scale(var(--logoScaleToCorner));
       cursor: default;
-    }
-
-    body.entered .brand img{
-      filter: drop-shadow(0 10px 28px rgba(0,0,0,.10));
     }
 
     /* Main content (hidden until entered) */
@@ -179,6 +175,39 @@
       .hint{ top: calc(50% + 130px); }
     }
 
+    /* ─────────────────────────────────────────────
+       MOBILE FIX: after animation, dock logo as a header
+       so it never overlaps the calendar.
+       ───────────────────────────────────────────── */
+    @media (max-width: 520px){
+      body.entered.settled .brand{
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--stroke);
+        z-index: 200;
+        pointer-events: none;   /* never blocks taps */
+        justify-content: flex-start;
+      }
+
+      body.entered.settled .brand img{
+        width: 170px;
+        max-width: 70vw;
+        filter: none;
+        opacity: 1;
+      }
+
+      /* Now the header exists, we can reduce padding */
+      body.entered.settled .main{
+        padding-top: calc(var(--pad) + 74px);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce){
       .brand, .main, .hint{ transition: none !important; }
     }
@@ -201,7 +230,7 @@
           <p class="title">Availability Calendar</p>
           <p class="sub">Updated as sits are confirmed.</p>
         </div>
-        <a class="btn" href="#contact" onclick="alert('If you have a contact section on another page, link it here.'); return false;">
+        <a class="btn" href="index.html#contact">
           Request a booking
         </a>
       </div>
@@ -226,14 +255,13 @@
       main.setAttribute('aria-hidden', 'false');
       btn.setAttribute('aria-disabled', 'true');
 
-      // Optional: remember the entered state for this tab
-      // sessionStorage.setItem('entered', '1');
+      // After the logo animation finishes, dock it on mobile
+      setTimeout(() => {
+        document.body.classList.add('settled');
+      }, 750);
     }
 
     btn.addEventListener('click', enter);
-
-    // Optional: auto-enter if remembered
-    // if (sessionStorage.getItem('entered') === '1') enter();
   </script>
 </body>
 </html>
