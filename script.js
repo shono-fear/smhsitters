@@ -45,4 +45,32 @@ document.getElementById("copyEmail")?.addEventListener("click", async () => {
   }
 });
 
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year")?.textContent = new Date().getFullYear();
+
+
+// ─────────────────────────────────────────────
+// Clean landing transition (logo → top-left, calendar appears)
+// Requires: #enterBtn (logo button) and #main (main content wrapper)
+// ─────────────────────────────────────────────
+const enterBtn = document.getElementById("enterBtn");
+const main = document.getElementById("main");
+
+function enterSite() {
+  if (!enterBtn || !main) return;
+  if (document.body.classList.contains("entered")) return;
+
+  document.body.classList.add("entered");
+  main.setAttribute("aria-hidden", "false");
+  enterBtn.setAttribute("aria-disabled", "true");
+
+  // after animation completes (matches your CSS transition time)
+  setTimeout(() => document.body.classList.add("settled"), 750);
+
+  // optional: remember for this tab so refresh skips intro
+  // sessionStorage.setItem("entered", "1");
+}
+
+enterBtn?.addEventListener("click", enterSite);
+
+// optional auto-enter if remembered
+// if (sessionStorage.getItem("entered") === "1") enterSite();
