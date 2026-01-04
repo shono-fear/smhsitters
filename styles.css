@@ -72,14 +72,60 @@ img{max-width:100%; display:block}
 
 .brand-text{font-family:var(--fontHead); font-weight:800; letter-spacing:0.2px}
 
-/* After entering: make logo feel like a subtle corner brand mark */
-body.entered .brand img{
-  opacity: 0.72;
-  filter: drop-shadow(0 8px 18px rgba(0,0,0,.08));
+/* After entering: logo becomes a fixed header above content */
+body.entered .brand{
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--stroke);
+  z-index: 100;
+  pointer-events: none; /* never blocks taps */
+  justify-content: flex-start;
 }
 
-body.entered .brand:hover img{
-  opacity: 0.92; /* small lift if they hover (desktop) */
+/* Size the logo nicely in the header */
+body.entered .brand img{
+  width: 170px;   /* tweak to taste */
+  max-width: 70vw;
+  opacity: 1;
+  filter: none;
+}
+
+/* Push main content down so it doesn't sit under the fixed header */
+body.entered .main{
+  padding-top: calc(var(--pad) + 70px);
+}
+
+
+body.entered.settled .brand{
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--stroke);
+  z-index: 100;
+  pointer-events: none;
+  justify-content: flex-start;
+}
+
+body.entered.settled .brand img{
+  width: 170px;
+  max-width: 70vw;
+  filter: none;
+  opacity: 1;
+}
+
+body.entered.settled .main{
+  padding-top: calc(var(--pad) + 70px);
 }
 
 
