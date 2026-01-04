@@ -274,12 +274,8 @@
     }
     .brand-dd a:hover{ background: rgba(0,0,0,0.04); }
 
-    /* Desktop hover/focus opens (only after entered) + lower position */
+    /* Desktop hover/focus opens (only after entered) */
     @media (hover: hover) and (min-width: 521px){
-      .brand-dd{
-        top: calc(var(--pad) + 92px); /* was +62px */
-       }
-
         body.entered .brand:hover + .brand-dd,
         body.entered .brand:focus-visible + .brand-dd,
         body.entered .brand-dd:hover{
@@ -289,18 +285,26 @@
         }
     }
 
+    /* Desktop: drop the menu a bit lower */
+    @media (hover: hover) and (min-width: 521px){
+        .brand-dd{
+            top: calc(var(--pad) + 92px); /* was +62px */
+        }
+    }
+
     /* Mobile/touch: show when peek is expanded */
     @media (hover: none), (max-width: 520px){
         .brand-dd{
-        top: 74px;
-        left: 12px;
-       }
-    body.logo-peek .brand-dd{
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
+            top: 74px;
+            left: 12px;
+        }
+        body.logo-peek .brand-dd{
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
     }
-}
+
 
 
 
