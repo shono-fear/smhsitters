@@ -73,23 +73,12 @@
     .brand:hover .logo-full{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
     .brand:focus-visible{ outline: 2px solid rgba(0,0,0,0.35); outline-offset: 8px; border-radius: 12px; }
 
-    /* After click: move logo to top-left (desktop "old behavior") */
+    /* After click: move logo to top-left (desktop keeps "old" behavior) */
     body.entered .brand{
       top: var(--pad);
       left: var(--pad);
       transform: translate(0, 0) scale(var(--logoScaleToCorner));
-      cursor: default;
-    }
-
-    /* Desktop: don't let logo block anything after enter */
-    @media (hover: hover) and (min-width: 521px){
-      body.entered .brand{
-        pointer-events: none;
-        z-index: 50;
-      }
-      /* Keep showing full logo on desktop after enter */
-      body.entered .logo-full{ display:block; }
-      body.entered .logo-mini{ display:none; }
+      cursor: pointer; /* so hover for dropdown feels intentional */
     }
 
     /* Main content (hidden until entered) */
@@ -170,25 +159,23 @@
 
     /* Optional hint text while still on logo screen */
     .hint{
-        position: fixed;
-        left: 50%;
-        top: calc(50% + 160px);
-        transform: translateX(-50%);
-        color: rgba(0,0,0,0.55);
-        font-size: 12px;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        opacity: 1;
-        transition: opacity 250ms ease;
-        z-index: 10;
-        user-select: none;
-
-        white-space: nowrap;
-        max-width: calc(100vw - 24px);
-        overflow: hidden;
-        text-overflow: ellipsis;
+      position: fixed;
+      left: 50%;
+      top: calc(50% + 150px);
+      transform: translateX(-50%);
+      color: rgba(0,0,0,0.55);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: 1;
+      transition: opacity 250ms ease;
+      z-index: 10;
+      user-select: none;
+      white-space: nowrap;
+      max-width: calc(100vw - 24px);
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
     body.entered .hint{ opacity: 0; pointer-events:none; }
 
     @media (max-width: 520px){
@@ -202,7 +189,7 @@
     }
 
     /* ─────────────────────────────────────────────
-       Peek tab ONLY on mobile/touch
+       MOBILE/TUCH: Peek tab ONLY
        ───────────────────────────────────────────── */
     @media (hover: none), (max-width: 520px){
       body.entered.settled .brand{
@@ -216,7 +203,7 @@
         border: 1px solid var(--stroke);
         border-radius: 18px;
         box-shadow: var(--shadow);
-        z-index: 250;
+        z-index: 260;
         cursor: pointer;
         pointer-events: auto;
         overflow: hidden;
@@ -251,8 +238,68 @@
       }
     }
 
+    /* ─────────────────────────────────────────────
+       Dropdown menu (index-clean only)
+       - Desktop: hover/focus on logo
+       - Mobile: appears when logo-peek is open
+       ───────────────────────────────────────────── */
+    .brand-dd{
+      position: fixed;
+      top: calc(var(--pad) + 62px);
+      left: var(--pad);
+      min-width: 210px;
+      padding: 8px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      z-index: 240;
+
+      display: grid;
+      gap: 6px;
+
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .brand-dd a{
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .brand-dd a:hover{ background: rgba(0,0,0,0.04); }
+
+    /* Desktop hover/focus opens (only after entered) */
+    @media (hover: hover) and (min-width: 521px){
+      body.entered .brand:hover + .brand-dd,
+      body.entered .brand:focus-visible + .brand-dd,
+      body.entered .brand-dd:hover{
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+
+    /* Mobile/touch: show when peek is expanded */
+    @media (hover: none), (max-width: 520px){
+      .brand-dd{
+        top: 74px;
+        left: 12px;
+      }
+      body.logo-peek .brand-dd{
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce){
-      .brand, .main, .hint{ transition: none !important; }
+      .brand, .main, .hint, .brand-dd{ transition: none !important; }
     }
   </style>
 </head>
@@ -264,6 +311,14 @@
     <img class="logo-full" src="images/logos/logo_02.png" alt="SMH Sitters">
   </button>
 
+  <!-- Dropdown menu (shows on hover desktop / logo-peek mobile) -->
+  <nav class="brand-dd" aria-label="Quick links">
+    <a href="index.html#about">About</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="completed-sits.html">Completed Sits</a>
+  </nav>
+
+  <div class="hint">Click logo to view availability</div>
 
   <!-- Revealed after click -->
   <main class="main" aria-hidden="true" id="main">
