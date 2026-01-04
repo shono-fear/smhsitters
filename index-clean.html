@@ -170,19 +170,25 @@
 
     /* Optional hint text while still on logo screen */
     .hint{
-      position: fixed;
-      left: 50%;
-      top: calc(50% + 150px);
-      transform: translateX(-50%);
-      color: rgba(0,0,0,0.55);
-      font-size: 12px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      opacity: 1;
-      transition: opacity 250ms ease;
-      z-index: 10;
-      user-select: none;
+        position: fixed;
+        left: 50%;
+        top: calc(50% + 160px);
+        transform: translateX(-50%);
+        color: rgba(0,0,0,0.55);
+        font-size: 12px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        opacity: 1;
+        transition: opacity 250ms ease;
+        z-index: 10;
+        user-select: none;
+
+        white-space: nowrap;
+        max-width: calc(100vw - 24px);
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
     body.entered .hint{ opacity: 0; pointer-events:none; }
 
     @media (max-width: 520px){
