@@ -55,7 +55,6 @@ img{max-width:100%; display:block}
   background: rgba(255,255,255,0.60);
   border-bottom: 1px solid var(--stroke);
 }
-
 .brand{display:flex; align-items:center; gap:10px}
 .brand-mark{
   width:42px; height:42px; display:grid; place-items:center;
@@ -64,6 +63,13 @@ img{max-width:100%; display:block}
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
+.brand-mark img{
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display:block;
+}
+
 .brand-text{font-family:var(--fontHead); font-weight:800; letter-spacing:0.2px}
 
 .nav{display:flex; gap:14px; align-items:center}
