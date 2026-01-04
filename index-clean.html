@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMH Sitters</title>
+  <meta name="description" content="SMH Sitters availability calendar." />
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#111111;
+      --muted:#6b6b6b;
+      --stroke: rgba(0,0,0,0.10);
+      --shadow: 0 18px 60px rgba(0,0,0,0.10);
+
+      --pad: 18px;
+      --radius: 18px;
+
+      /* Logo sizing */
+      --logoW: 420px;     /* centered size (desktop) */
+      --logoScaleToCorner: 0.30; /* how small it becomes top-left */
+    }
+
+    *{ box-sizing:border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* Logo button */
+    .brand{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: top left;
+      transition:
+        top 700ms cubic-bezier(.2,.9,.2,1),
+        left 700ms cubic-bezier(.2,.9,.2,1),
+        transform 700ms cubic-bezier(.2,.9,.2,1);
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .brand img{
+      width: min(var(--logoW), 78vw);
+      height: auto;
+      display:block;
+      filter: drop-shadow(0 14px 34px rgba(0,0,0,.12));
+      transition: filter 250ms ease;
+    }
+
+    .brand:hover img{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
+    .brand:focus-visible{ outline: 2px solid rgba(0,0,0,0.35); outline-offset: 8px; border-radius: 12px; }
+
+    /* After click: move logo to top-left */
+    body.entered .brand{
+      top: var(--pad);
+      left: var(--pad);
+      transform: translate(0, 0) scale(var(--logoScaleToCorner));
+      cursor: default;
+    }
+
+    body.entered .brand img{
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,.10));
+    }
+
+    /* Main content (hidden until entered) */
+    .main{
+      min-height: 100vh;
+      padding: calc(var(--pad) + 62px) var(--pad) var(--pad);
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 550ms ease, transform 550ms ease;
+      transition-delay: 0ms;
+    }
+
+    body.entered .main{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition-delay: 320ms; /* wait a bit so logo moves first */
+    }
+
+    .panel{
+      width: min(980px, 100%);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .panel-top{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .title{
+      font-weight: 800;
+      letter-spacing: .2px;
+      margin:0;
+      font-size: 16px;
+    }
+
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: #fff;
+      cursor:pointer;
+      font-weight: 800;
+      font-size: 13px;
+      text-decoration:none;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+
+    .calendar{
+      width: 100%;
+      height: 70vh;
+      min-height: 520px;
+      border: 0;
+      display:block;
+    }
+
+    /* Optional hint text while still on logo screen */
+    .hint{
+      position: fixed;
+      left: 50%;
+      top: calc(50% + 150px);
+      transform: translateX(-50%);
+      color: rgba(0,0,0,0.55);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: 1;
+      transition: opacity 250ms ease;
+      z-index: 10;
+      user-select: none;
+    }
+    body.entered .hint{ opacity: 0; pointer-events:none; }
+
+    @media (max-width: 520px){
+      :root{
+        --logoW: 320px;
+        --logoScaleToCorner: 0.38;
+      }
+      .panel-top{ align-items:flex-start; flex-direction: column; }
+      .calendar{ height: 74vh; min-height: 560px; }
+      .hint{ top: calc(50% + 130px); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .brand, .main, .hint{ transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Click-to-enter logo -->
+  <button class="brand" id="enterBtn" aria-label="Enter site">
+    <img src="images/logos/logo_02.png" alt="SMH Sitters">
+  </button>
+
+  <div class="hint">Click logo to view availability</div>
+
+  <!-- Revealed after click -->
+  <main class="main" aria-hidden="true" id="main">
+    <section class="panel">
+      <div class="panel-top">
+        <div>
+          <p class="title">Availability Calendar</p>
+          <p class="sub">Updated as sits are confirmed.</p>
+        </div>
+        <a class="btn" href="#contact" onclick="alert('If you have a contact section on another page, link it here.'); return false;">
+          Request a booking
+        </a>
+      </div>
+
+      <iframe
+        class="calendar"
+        title="Availability calendar"
+        src="https://calendar.google.com/calendar/embed?src=34de5f671910875ce776a330ff0219c31b8876d161c80602af164aabc57c1dda%40group.calendar.google.com&ctz=Australia%2FMelbourne"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </section>
+  </main>
+
+  <script>
+    const btn = document.getElementById('enterBtn');
+    const main = document.getElementById('main');
+
+    function enter() {
+      if (document.body.classList.contains('entered')) return;
+      document.body.classList.add('entered');
+      main.setAttribute('aria-hidden', 'false');
+      btn.setAttribute('aria-disabled', 'true');
+
+      // Optional: remember the entered state for this tab
+      // sessionStorage.setItem('entered', '1');
+    }
+
+    btn.addEventListener('click', enter);
+
+    // Optional: auto-enter if remembered
+    // if (sessionStorage.getItem('entered') === '1') enter();
+  </script>
+</body>
+</html>
