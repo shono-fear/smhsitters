@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@
         top 700ms cubic-bezier(.2,.9,.2,1),
         left 700ms cubic-bezier(.2,.9,.2,1),
         transform 700ms cubic-bezier(.2,.9,.2,1);
-      z-index: 100; /* above everything during intro */
+      z-index: 200; /* above everything during intro */
       display: inline-flex;
       align-items: center;
       gap: 12px;
@@ -53,7 +54,8 @@
       padding: 0;
     }
 
-    .brand img{
+    /* Full logo (big on intro) */
+    .logo-full{
       width: min(var(--logoW), 78vw);
       height: auto;
       display:block;
@@ -61,7 +63,15 @@
       transition: filter 250ms ease, opacity 250ms ease;
     }
 
-    .brand:hover img{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
+    /* Mini logo (hidden until settled) */
+    .logo-mini{
+      display:none;
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    .brand:hover .logo-full{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
     .brand:focus-visible{ outline: 2px solid rgba(0,0,0,0.35); outline-offset: 8px; border-radius: 12px; }
 
     /* After click: move logo to top-left */
@@ -176,35 +186,74 @@
     }
 
     /* ─────────────────────────────────────────────
-       MOBILE FIX: after animation, dock logo as a header
-       so it never overlaps the calendar.
+       Peek tab (after enter + settled)
+       - Small tab pokes from top-left (mini logo)
+       - Hover (desktop) expands to full logo
+       - Tap (mobile) toggles via body.logo-peek
        ───────────────────────────────────────────── */
+    body.entered.settled .brand{
+      top: 12px;
+      left: 0;
+      transform: translateX(-14px);     /* poke out */
+      width: 56px;
+      height: 56px;
+      padding: 10px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      z-index: 250;
+      cursor: pointer;
+      pointer-events: auto;
+      overflow: hidden;
+      transition:
+        width 220ms ease,
+        transform 220ms ease,
+        top 220ms ease,
+        left 220ms ease;
+    }
+
+    /* tab mode: show mini, hide full */
+    body.entered.settled .logo-mini{ display:block; }
+    body.entered.settled .logo-full{ display:none; filter:none; opacity:1; }
+
+    /* expand on hover (desktop) */
+    @media (hover: hover){
+      body.entered.settled .brand:hover{
+        width: 240px;
+        transform: translateX(12px);
+      }
+      body.entered.settled .brand:hover .logo-mini{ display:none; }
+      body.entered.settled .brand:hover .logo-full{
+        display:block;
+        width: 200px;
+        max-width: 75vw;
+        filter:none;
+        opacity:1;
+      }
+    }
+
+    /* expand on tap (mobile): body.logo-peek */
+    body.logo-peek .brand{
+      width: 240px;
+      transform: translateX(12px);
+    }
+    body.logo-peek .logo-mini{ display:none; }
+    body.logo-peek .logo-full{
+      display:block;
+      width: 200px;
+      max-width: 75vw;
+      filter:none;
+      opacity:1;
+    }
+
+    /* Give content room so the tab doesn't sit on panel header */
+    body.entered .main{
+      padding-top: calc(var(--pad) + 90px);
+    }
     @media (max-width: 520px){
-      body.entered.settled .brand{
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: none;
-        width: 100%;
-        padding: 6px 10px;
-        background: rgba(255,255,255,0.96);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid var(--stroke);
-        z-index: 200;
-        pointer-events: none;   /* never blocks taps */
-        justify-content: flex-start;
-      }
-
-      body.entered.settled .brand img{
-        width: 100px;
-        max-width: 70vw;
-        filter: none;
-        opacity: 1;
-      }
-
-      /* Now the header exists, we can reduce padding */
-      body.entered.settled .main{
-        padding-top: calc(var(--pad) + 74px);
+      body.entered .main{
+        padding-top: calc(var(--pad) + 96px);
       }
     }
 
@@ -217,13 +266,9 @@
 <body>
   <!-- Click-to-enter logo -->
   <button class="brand" id="enterBtn" type="button" aria-label="Enter site">
-  <!-- mini logo (ideally a simple mark/icon). If you don't have one yet, point this to logo_02.png for now -->
-  <img class="logo-mini" src="images/logos/logo_01.png" alt="" aria-hidden="true">
-
-  <!-- full logo -->
-  <img class="logo-full" src="images/logos/logo_02.png" alt="SMH Sitters">
-</button>
-
+    <img class="logo-mini" src="images/logos/logo_01.png" alt="" aria-hidden="true">
+    <img class="logo-full" src="images/logos/logo_02.png" alt="SMH Sitters">
+  </button>
 
   <div class="hint">Click logo to view availability</div>
 
@@ -235,9 +280,7 @@
           <p class="title">Availability Calendar</p>
           <p class="sub">Updated as sits are confirmed.</p>
         </div>
-        <a class="btn" href="index.html#contact">
-          Request a booking
-        </a>
+        <a class="btn" href="index.html#contact">Request a booking</a>
       </div>
 
       <iframe
@@ -253,20 +296,53 @@
   <script>
     const btn = document.getElementById('enterBtn');
     const main = document.getElementById('main');
+    const canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
 
     function enter() {
       if (document.body.classList.contains('entered')) return;
+
       document.body.classList.add('entered');
       main.setAttribute('aria-hidden', 'false');
-      btn.setAttribute('aria-disabled', 'true');
 
-      // After the logo animation finishes, dock it on mobile
-      setTimeout(() => {
-        document.body.classList.add('settled');
-      }, 750);
+      // after logo animation finishes, switch into peek-tab mode
+      setTimeout(() => document.body.classList.add('settled'), 750);
     }
 
-    btn.addEventListener('click', enter);
+    function togglePeek(force) {
+      if (!document.body.classList.contains('settled')) return;
+      if (typeof force === "boolean") {
+        document.body.classList.toggle('logo-peek', force);
+      } else {
+        document.body.classList.toggle('logo-peek');
+      }
+    }
+
+    // click: first click enters, later clicks toggle peek
+    btn.addEventListener('click', () => {
+      if (!document.body.classList.contains('entered')) {
+        enter();
+        return;
+      }
+      togglePeek();
+    });
+
+    // hover: open/close on desktop
+    if (canHover) {
+      btn.addEventListener('pointerenter', () => togglePeek(true));
+      btn.addEventListener('pointerleave', () => togglePeek(false));
+    }
+
+    // clicking outside closes peek
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('logo-peek')) return;
+      if (btn.contains(e.target)) return;
+      togglePeek(false);
+    });
+
+    // Esc closes peek
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') togglePeek(false);
+    });
   </script>
 </body>
 </html>
