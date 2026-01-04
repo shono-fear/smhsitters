@@ -538,3 +538,83 @@ h1{
 }
 
 
+
+
+
+/* ─────────────────────────────────────────────
+   Logo "peek tab" after entering
+   - desktop: hover expands
+   - mobile: tap toggles open/closed
+   ───────────────────────────────────────────── */
+
+/* default: show full logo (intro) */
+.logo-mini{ display:none; }
+.logo-full{ display:block; }
+
+/* once entered+settled: become a small tab that can expand */
+body.entered.settled .brand{
+  top: 12px;
+  left: 0;
+  transform: translateX(-14px);     /* poke out */
+  width: 58px;
+  height: 58px;
+  padding: 10px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  z-index: 200;
+  cursor: pointer;
+  pointer-events: auto;             /* allow hover/tap */
+  overflow: hidden;
+  transition:
+    width 220ms ease,
+    transform 220ms ease,
+    top 220ms ease,
+    left 220ms ease;
+}
+
+/* in tab state, only show the mini mark */
+body.entered.settled .logo-mini{
+  display:block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: none;
+}
+body.entered.settled .logo-full{ display:none; }
+
+/* expand on hover (desktop) */
+body.entered.settled .brand:hover{
+  width: 230px;
+  transform: translateX(12px);
+}
+body.entered.settled .brand:hover .logo-mini{ display:none; }
+body.entered.settled .brand:hover .logo-full{
+  display:block;
+  width: 190px;
+  max-width: 75vw;
+  height:auto;
+  filter:none;
+}
+
+/* expand on tap (mobile): we toggle body.logo-peek */
+body.logo-peek .brand{
+  width: 230px;
+  transform: translateX(12px);
+}
+body.logo-peek .brand .logo-mini{ display:none; }
+body.logo-peek .brand .logo-full{
+  display:block;
+  width: 190px;
+  max-width: 75vw;
+  height:auto;
+  filter:none;
+}
+
+/* give content room so the tab never covers the panel top */
+@media (max-width: 520px){
+  body.entered.settled .main{
+    padding-top: calc(var(--pad) + 82px);
+  }
+}
