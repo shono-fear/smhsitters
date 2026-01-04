@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMH Sitters</title>
+  <meta name="description" content="SMH Sitters" />
+
+  <style>
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#111;
+    }
+    .enter{
+      display:grid;
+      place-items:center;
+      text-decoration:none;
+      outline:none;
+    }
+    .logo{
+      width:min(220px, 60vw);
+      height:auto;
+      display:block;
+      transition: transform .18s ease, filter .18s ease;
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,.12));
+    }
+    .enter:hover .logo,
+    .enter:focus-visible .logo{
+      transform: translateY(-2px) scale(1.01);
+      filter: drop-shadow(0 14px 34px rgba(0,0,0,.16));
+    }
+    .hint{
+      margin-top:14px;
+      font-size:13px;
+      color: rgba(0,0,0,.55);
+      letter-spacing:.04em;
+      text-transform: uppercase;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .logo{ transition:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="enter" href="index.html" aria-label="Enter SMH Sitters website">
+    <img class="logo" src="images/logos/logo_02.png" alt="SMH Sitters logo">
+    <div class="hint">Click to enter</div>
+  </a>
+</body>
+</html>
