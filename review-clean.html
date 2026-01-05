@@ -79,14 +79,15 @@
     /* Main content */
     .main{
       min-height: 100vh;
-      padding: calc(var(--pad) + 120px) var(--pad) var(--pad);
-      display: grid;
-      place-items: center;
-      opacity: 0;
-      transform: translateY(10px);
-      pointer-events: none;
-      transition: opacity 550ms ease, transform 550ms ease;
-      transition-delay: 0ms;
+        padding: calc(var(--pad) + 120px) var(--pad) var(--pad);
+        display: block;              /* was grid */
+        max-width: 980px;            /* match panel width */
+        margin: 0 auto;              /* center the column */
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: opacity 550ms ease, transform 550ms ease;
+        transition-delay: 0ms;
     }
     body.entered .main{
       opacity: 1;
@@ -96,7 +97,7 @@
     }
 
     .panel{
-      width: min(980px, 100%);
+      width: 100%;
       border: 1px solid var(--stroke);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
