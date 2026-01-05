@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Reviews • SMH Sitters</title>
-  <meta name="description" content="SMH Sitters reviews (via Aussie House Sitters)." />
+  <meta name="description" content="Reviews and testimonials from homeowners — SMH Sitters house & pet sitting." />
 
   <style>
     :root{
@@ -17,6 +17,7 @@
       --pad: 18px;
       --radius: 18px;
 
+      /* Logo sizing */
       --logoW: 420px;
       --logoScaleToCorner: 0.30;
     }
@@ -69,6 +70,7 @@
     .brand:hover .logo-full{ filter: drop-shadow(0 18px 44px rgba(0,0,0,.16)); }
     .brand:focus-visible{ outline: 2px solid rgba(0,0,0,0.35); outline-offset: 8px; border-radius: 12px; }
 
+    /* After click: move logo to top-left */
     body.entered .brand{
       top: var(--pad);
       left: var(--pad);
@@ -76,19 +78,20 @@
       cursor: pointer;
     }
 
-    /* Main content */
+    /* Main content (NOT vertically centered; grows naturally) */
     .main{
       min-height: 100vh;
-        padding: calc(var(--pad) + 120px) var(--pad) var(--pad);
-        display: block;              /* was grid */
-        max-width: 980px;            /* match panel width */
-        margin: 0 auto;              /* center the column */
-        opacity: 0;
-        transform: translateY(10px);
-        pointer-events: none;
-        transition: opacity 550ms ease, transform 550ms ease;
-        transition-delay: 0ms;
+      padding: calc(var(--pad) + 120px) var(--pad) var(--pad);
+      max-width: 980px;
+      margin: 0 auto;
+
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 550ms ease, transform 550ms ease;
+      transition-delay: 0ms;
     }
+
     body.entered .main{
       opacity: 1;
       transform: translateY(0);
@@ -125,6 +128,7 @@
       margin:0;
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.35;
     }
 
     .btn{
@@ -144,13 +148,13 @@
     }
     .btn:hover{ transform: translateY(-1px); }
 
-    /* Content area inside panel */
     .content{
       padding: 16px;
       display: grid;
       gap: 14px;
     }
 
+    /* Summary cards */
     .summary{
       display:grid;
       grid-template-columns: repeat(4, 1fr);
@@ -165,7 +169,7 @@
     }
     .stat b{
       display:block;
-      font-size: 20px;
+      font-size: 16px;
       letter-spacing: .2px;
     }
     .stat span{
@@ -174,19 +178,18 @@
       font-size: 12px;
       color: var(--muted);
       font-weight: 800;
+      line-height: 1.3;
     }
 
     .note{
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
+      margin: 0;
     }
 
-    /* Reviews list */
-    .reviews{
-      display:grid;
-      gap: 12px;
-    }
+    /* Reviews */
+    .reviews{ display:grid; gap: 12px; }
 
     .review{
       border:1px solid var(--stroke);
@@ -233,23 +236,14 @@
       font-size: 14px;
     }
 
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
+    .reviewer{
       margin-top: 10px;
-    }
-    .pill{
-      border:1px solid var(--stroke);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
       font-weight: 900;
-      color: rgba(0,0,0,0.65);
-      background: rgba(0,0,0,0.02);
+      font-size: 12px;
+      color: rgba(0,0,0,0.55);
     }
 
-    /* Hint text (optional) */
+    /* Optional hint */
     .hint{
       position: fixed;
       left: 50%;
@@ -263,6 +257,7 @@
       transition: opacity 250ms ease;
       z-index: 10;
       user-select: none;
+
       white-space: nowrap;
       max-width: calc(100vw - 24px);
       overflow: hidden;
@@ -280,7 +275,7 @@
       .hint{ top: calc(50% + 130px); }
     }
 
-    /* Mobile/touch peek tab ONLY */
+    /* Mobile/touch peek tab */
     @media (hover: none), (max-width: 520px){
       body.entered.settled .brand{
         top: 12px;
@@ -387,13 +382,11 @@
 </head>
 
 <body>
-  <!-- Click-to-enter logo -->
   <button class="brand" id="enterBtn" type="button" aria-label="Enter site">
     <img class="logo-mini" src="images/logos/logo_01.png" alt="" aria-hidden="true">
     <img class="logo-full" src="images/logos/logo_02.png" alt="SMH Sitters">
   </button>
 
-  <!-- Dropdown -->
   <nav class="brand-dd" aria-label="Quick links">
     <a href="index-clean.html">Availability</a>
     <a href="review-clean.html" aria-current="page">Reviews</a>
@@ -407,110 +400,182 @@
       <div class="panel-top">
         <div>
           <p class="title">Reviews</p>
-          <p class="sub">From Aussie House Sitters (copy/paste your review text below).</p>
+          <p class="sub">Testimonials from Aussie House Sitters — trust, communication, and happy pets.</p>
         </div>
         <a class="btn" href="index.html#contact">Request a booking</a>
       </div>
 
       <div class="content">
         <div class="summary">
-          <div class="stat"><b>10</b><span>Completed sits</span></div>
-          <div class="stat"><b>401</b><span>Total nights</span></div>
-          <div class="stat"><b>2023–2025</b><span>Sit history</span></div>
-          <div class="stat"><b>VIC</b><span>Melbourne + regional</span></div>
+          <div class="stat"><b>★★★★★</b><span>Consistently 5-star sits</span></div>
+          <div class="stat"><b>Dogs + cats</b><span>Plus home & garden care</span></div>
+          <div class="stat"><b>Updates</b><span>Clear messages + photos</span></div>
+          <div class="stat"><b>Spotless</b><span>Homes left tidy & cared for</span></div>
         </div>
 
         <p class="note">
-          Tip: Keep this page “high signal” by pasting the best 6–10 reviews in full.
-          (You can add more later or link to your full Reviews page.)
+          Tip: Your name appears with different spellings on platform reviews — choose one spelling for your website and keep it consistent.
         </p>
 
         <div class="reviews">
-          <!-- EXAMPLE: Damian (you already pasted this review earlier) -->
           <article class="review">
             <div class="review-top">
               <div>
                 <h3>Damian — Apollo Bay, VIC</h3>
-                <div class="meta">16 Aug 2025 → 25 Aug 2025</div>
+                <div class="meta">16–25 Aug 2025 • Swiss Shepherd “Oslo”</div>
               </div>
-              <div class="stars">★★★★★</div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
             <p>
-              Exceptional and Trustworthy Sitters! We highly recommend Shonnan and Meow as house and pet sitters.
-              They were fantastic with our 2.5-year-old Swiss Shepherd, Oslo. Communication was excellent from the very beginning.
-              We had a FaceTime call well in advance and met in person the day before to ensure that Shonnan and Meow understood all of Oslo’s needs.
-              Regular updates and photos during the sit were incredibly reassuring. We returned home to a very happy and relaxed dog,
-              and our house was left in immaculate condition. We would not hesitate to book them again and wholeheartedly recommend them.
+              “Exceptional and trustworthy sitters! We highly recommend them as house and pet sitters. They were fantastic with our 2.5-year-old Swiss Shepherd, Oslo.
+              Communication was excellent from the very beginning. We had a FaceTime call well in advance and met in person the day before to ensure Oslo’s needs were understood.
+              Regular updates and photos during the sit were incredibly reassuring. We returned home to a very happy and relaxed dog, and our house was left in immaculate condition.
+              We would not hesitate to book them again and wholeheartedly recommend them to anyone looking for reliable and respectful sitters.”
             </p>
-            <div class="pill-row">
-              <span class="pill">Swiss Shepherd “Oslo”</span>
-              <span class="pill">Apollo Bay</span>
-              <span class="pill">9 nights</span>
-            </div>
+            <div class="reviewer">— Damian</div>
           </article>
 
-          <!-- PLACEHOLDERS: paste text when ready -->
           <article class="review">
             <div class="review-top">
               <div>
                 <h3>Allison — Maidstone, VIC</h3>
-                <div class="meta">18 Jun 2025 → 15 Aug 2025</div>
+                <div class="meta">18 Jun–15 Aug 2025</div>
               </div>
-              <div class="stars">★★★★★</div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
-            <p><em>Paste review text here…</em></p>
-            <div class="pill-row">
-              <span class="pill">58 nights</span>
-            </div>
+            <p>
+              “What a fantastic couple. They took great care of our pets and home, and handled unexpected challenges (builders next door and plumbing issues) like pros.
+              Our dogs are demanding, but they were patient and diligent — by the end, the dogs adored them. Highly recommended.”
+            </p>
+            <div class="reviewer">— Allison</div>
           </article>
 
           <article class="review">
             <div class="review-top">
               <div>
                 <h3>Gabriel — Kensington, VIC</h3>
-                <div class="meta">7 Apr 2025 → 30 Jun 2025</div>
+                <div class="meta">7 Apr–30 Jun 2025</div>
               </div>
-              <div class="stars">★★★★★</div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
-            <p><em>Paste review text here…</em></p>
-            <div class="pill-row">
-              <span class="pill">84 nights</span>
-            </div>
+            <p>
+              “Fantastic house and pet sitters — responsive, reliable, and met the needs of our home and beloved dogs.
+              We highly recommend them if you have the opportunity to book them.”
+            </p>
+            <div class="reviewer">— Gabriel</div>
           </article>
 
           <article class="review">
             <div class="review-top">
               <div>
                 <h3>Jacinta — Lake Tyers Beach, VIC</h3>
-                <div class="meta">14 Mar 2025 → 2 Apr 2025</div>
+                <div class="meta">14 Mar–2 Apr 2025</div>
               </div>
-              <div class="stars">★★★★★</div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
-            <p><em>Paste review text here…</em></p>
-            <div class="pill-row">
-              <span class="pill">19 nights</span>
-            </div>
+            <p>
+              “A perfect housesit. We came home to two happy, healthy dogs and a house that was a pleasure to walk into.
+              Communication was timely with lovely photos and videos. We also appreciated the thoughtful touches like flowers
+              and a few essentials left for us. A very positive experience.”
+            </p>
+            <div class="reviewer">— Jacinta</div>
           </article>
 
           <article class="review">
             <div class="review-top">
               <div>
                 <h3>Nadine — Ashwood, VIC</h3>
-                <div class="meta">6 Jan 2025 → 28 Jan 2025</div>
+                <div class="meta">6–28 Jan 2025 • Cats + chickens</div>
               </div>
-              <div class="stars">★★★★★</div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
-            <p><em>Paste review text here…</em></p>
-            <div class="pill-row">
-              <span class="pill">Cats + chickens</span>
-              <span class="pill">22 nights</span>
+            <p>
+              “They were fabulous. Our cats were relaxed and happy, the chickens were well looked after,
+              our home was beautifully clean, and the plants were thriving. Highly recommend.”
+            </p>
+            <div class="reviewer">— Nadine</div>
+          </article>
+
+          <article class="review">
+            <div class="review-top">
+              <div>
+                <h3>Joel — Altona Beach, VIC</h3>
+                <div class="meta">19 Dec 2024–5 Jan 2025</div>
+              </div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
             </div>
+            <p>
+              “Clear animal lovers and excellent communicators. We received regular updates, came home to a happy dog,
+              and the house looked amazing. Couldn’t have asked for more — highly recommend.”
+            </p>
+            <div class="reviewer">— Joel</div>
+          </article>
+
+          <article class="review">
+            <div class="review-top">
+              <div>
+                <h3>Julian — Ballarat, VIC</h3>
+                <div class="meta">17 Oct–15 Nov 2024 • Puppy + older dog</div>
+              </div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
+            </div>
+            <p>
+              “We feel like we struck gold. They were calm and gentle with our rambunctious puppy and our timid older dog,
+              kept us updated, and left our home spotless — even with thoughtful extras like flowers and supplies for our return.
+              The dogs were sad to see them go. We’d love to have them back and highly recommend them.”
+            </p>
+            <div class="reviewer">— Julian</div>
+          </article>
+
+          <article class="review">
+            <div class="review-top">
+              <div>
+                <h3>Lucy — Port Melbourne, VIC</h3>
+                <div class="meta">13 Sep–15 Oct 2024</div>
+              </div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
+            </div>
+            <p>
+              “Fantastic with our dog, great communication, and the house was spotless when we returned.
+              They also managed an unexpected issue while we were away. They completely eased our nerves as first-time house-sitter users —
+              we’d have them back in a heartbeat.”
+            </p>
+            <div class="reviewer">— Lucy</div>
+          </article>
+
+          <article class="review">
+            <div class="review-top">
+              <div>
+                <h3>Janet — Clifton Springs, VIC</h3>
+                <div class="meta">7 Jun–12 Sep 2024</div>
+              </div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
+            </div>
+            <p>
+              “We came home after 97 days away to a very clean house and a very well cared for dog.
+              We would certainly recommend them for any future house sitting.”
+            </p>
+            <div class="reviewer">— Janet</div>
+          </article>
+
+          <article class="review">
+            <div class="review-top">
+              <div>
+                <h3>Nicole — Grovedale, VIC</h3>
+                <div class="meta">20 Dec 2023–23 Jan 2024 • House + garden + 2 dogs</div>
+              </div>
+              <div class="stars" aria-label="5 star rating">★★★★★</div>
+            </div>
+            <p>
+              “They took great care of our house, garden, and two dogs. We returned to a clean, fresh home,
+              mowed lawns, and very content pets. Overall a great experience.”
+            </p>
+            <div class="reviewer">— Nicole</div>
           </article>
         </div>
 
-        <p class="note">
-          Want this to feel more “premium”? Next step is adding a small thumbnail strip per review,
-          and a “Read more” expand/collapse for long reviews.
+        <p class="note" style="padding-top:6px;">
+          © <span id="year"></span> SMH Sitters • <a href="index.html#contact" style="color:inherit;">Contact us</a>
         </p>
       </div>
     </section>
@@ -577,6 +642,8 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') togglePeek(false);
     });
+
+    document.getElementById("year")?.textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
