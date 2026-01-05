@@ -582,68 +582,83 @@
   </main>
 
   <script>
-    const btn = document.getElementById('enterBtn');
-    const main = document.getElementById('main');
+    (function () {
+    var btn = document.getElementById("enterBtn");
+    var main = document.getElementById("main");
 
-    const isTouchLike =
-      (window.matchMedia && window.matchMedia("(hover: none)").matches) ||
-      (window.matchMedia && window.matchMedia("(max-width: 520px)").matches);
+    var isTouchLike = false;
+    try {
+        isTouchLike =
+        (window.matchMedia && window.matchMedia("(hover: none)").matches) ||
+        (window.matchMedia && window.matchMedia("(max-width: 520px)").matches);
+    } catch (e) {}
 
     function setEnteredInstant() {
-      document.body.classList.add('entered');
-      document.body.classList.add('settled');
-      main.setAttribute('aria-hidden', 'false');
+        document.body.classList.add("entered");
+        document.body.classList.add("settled");
+        if (main) main.setAttribute("aria-hidden", "false");
     }
 
+    // ✅ Skip intro if already entered before (persists across visits)
+    try {
+        if (localStorage.getItem("smh_entered") === "1") {
+        setEnteredInstant();
+        }
+    } catch (e) {}
+
     function enter() {
-      if (document.body.classList.contains('entered')) return;
+        if (document.body.classList.contains("entered")) return;
 
-      document.body.classList.add('entered');
-      main.setAttribute('aria-hidden', 'false');
+        document.body.classList.add("entered");
+        if (main) main.setAttribute("aria-hidden", "false");
 
-      setTimeout(() => document.body.classList.add('settled'), 750);
+        // mark as entered forever (until cleared)
+        try { localStorage.setItem("smh_entered", "1"); } catch (e) {}
 
-      try { sessionStorage.setItem('smh_entered', '1'); } catch {}
+        setTimeout(function () {
+        document.body.classList.add("settled");
+        }, 750);
     }
 
     function togglePeek(force) {
-      if (!isTouchLike) return;
-      if (!document.body.classList.contains('settled')) return;
+        if (!isTouchLike) return;
+        if (!document.body.classList.contains("settled")) return;
 
-      if (typeof force === "boolean") {
-        document.body.classList.toggle('logo-peek', force);
-      } else {
-        document.body.classList.toggle('logo-peek');
-      }
+        if (typeof force === "boolean") {
+        if (force) document.body.classList.add("logo-peek");
+        else document.body.classList.remove("logo-peek");
+        } else {
+        document.body.classList.toggle("logo-peek");
+        }
     }
 
-    // Auto-enter if already entered in this tab
-    try {
-      if (sessionStorage.getItem('smh_entered') === '1') setEnteredInstant();
-    } catch {}
-
-    // click: first click enters; later clicks toggle peek ONLY on touch/mobile
-    btn.addEventListener('click', () => {
-      if (!document.body.classList.contains('entered')) {
-        enter();
-        return;
-      }
-      togglePeek();
-    });
+    // click: first click enters; later clicks toggle peek (mobile/touch)
+    if (btn) {
+        btn.addEventListener("click", function () {
+        if (!document.body.classList.contains("entered")) {
+            enter();
+            return;
+        }
+        togglePeek();
+        });
+    }
 
     // tapping outside closes peek (touch/mobile only)
-    document.addEventListener('click', (e) => {
-      if (!isTouchLike) return;
-      if (!document.body.classList.contains('logo-peek')) return;
-      if (btn.contains(e.target)) return;
-      togglePeek(false);
+    document.addEventListener("click", function (e) {
+        if (!isTouchLike) return;
+        if (!document.body.classList.contains("logo-peek")) return;
+        if (btn && btn.contains(e.target)) return;
+        togglePeek(false);
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') togglePeek(false);
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") togglePeek(false);
     });
 
-    document.getElementById("year")?.textContent = new Date().getFullYear();
-  </script>
+    var yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    })();
+</script>
+
 </body>
 </html>
