@@ -189,7 +189,7 @@
     }
 
     /* ─────────────────────────────────────────────
-       MOBILE/TUCH: Peek tab ONLY
+       MOBILE/TOUCH: Peek tab ONLY
        ───────────────────────────────────────────── */
     @media (hover: none), (max-width: 520px){
       body.entered.settled .brand{
@@ -274,39 +274,41 @@
     }
     .brand-dd a:hover{ background: rgba(0,0,0,0.04); }
 
-    /* Desktop hover/focus opens (only after entered) */
+    /* Desktop: open on hover/focus + positioned lower */
     @media (hover: hover) and (min-width: 521px){
-        body.entered .brand:hover + .brand-dd,
-        body.entered .brand:focus-visible + .brand-dd,
-        body.entered .brand-dd:hover{
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-    }
+      .brand-dd{ top: calc(var(--pad) + 116px); }
 
-    /* Desktop: drop the menu a bit lower */
-    @media (hover: hover) and (min-width: 521px){
-        .brand-dd{
-            top: calc(var(--pad) + 116px); /* was +62px */
-        }
+      body.entered .brand:hover + .brand-dd,
+      body.entered .brand:focus-visible + .brand-dd,
+      body.entered .brand-dd:hover{
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
     }
 
     /* Mobile/touch: show when peek is expanded */
     @media (hover: none), (max-width: 520px){
-        .brand-dd{
-            top: 64px;
-            left: 12px;
-        }
-        body.logo-peek .brand-dd{
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
+      .brand-dd{
+        top: 64px;
+        left: 12px;
+      }
+      body.logo-peek .brand-dd{
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
     }
 
-
-
+    /* ─────────────────────────────────────────────
+       Skip-intro mode (prevents big-logo flash when auto-entering)
+       ───────────────────────────────────────────── */
+    body.no-intro .brand,
+    body.no-intro .main,
+    body.no-intro .hint,
+    body.no-intro .brand-dd{
+      transition: none !important;
+    }
 
     @media (prefers-reduced-motion: reduce){
       .brand, .main, .hint, .brand-dd{ transition: none !important; }
@@ -352,55 +354,85 @@
   </main>
 
   <script>
-    const btn = document.getElementById('enterBtn');
-    const main = document.getElementById('main');
+    (function () {
+      var btn = document.getElementById('enterBtn');
+      var main = document.getElementById('main');
 
-    const isTouchLike =
-      (window.matchMedia && window.matchMedia("(hover: none)").matches) ||
-      (window.matchMedia && window.matchMedia("(max-width: 520px)").matches);
+      var isTouchLike = false;
+      try {
+        isTouchLike =
+          (window.matchMedia && window.matchMedia("(hover: none)").matches) ||
+          (window.matchMedia && window.matchMedia("(max-width: 520px)").matches);
+      } catch (e) {}
 
-    function enter() {
-      if (document.body.classList.contains('entered')) return;
-
-      document.body.classList.add('entered');
-      main.setAttribute('aria-hidden', 'false');
-
-      // after logo animation finishes, enable settled state
-      setTimeout(() => document.body.classList.add('settled'), 750);
-    }
-
-    function togglePeek(force) {
-      if (!isTouchLike) return;
-      if (!document.body.classList.contains('settled')) return;
-
-      if (typeof force === "boolean") {
-        document.body.classList.toggle('logo-peek', force);
-      } else {
-        document.body.classList.toggle('logo-peek');
+      function setEnteredInstant() {
+        document.body.classList.add('entered');
+        document.body.classList.add('settled');
+        if (main) main.setAttribute('aria-hidden', 'false');
       }
-    }
 
-    // click: first click enters; later clicks toggle peek ONLY on touch/mobile
-    btn.addEventListener('click', () => {
-      if (!document.body.classList.contains('entered')) {
-        enter();
-        return;
+      // Auto-enter if we've already done the intro before
+      try {
+        if (localStorage.getItem('smh_entered') === '1') {
+          document.body.classList.add('no-intro');
+          setEnteredInstant();
+          setTimeout(function () {
+            document.body.classList.remove('no-intro');
+          }, 50);
+        }
+      } catch (e) {}
+
+      function enter() {
+        if (document.body.classList.contains('entered')) return;
+
+        document.body.classList.add('entered');
+        if (main) main.setAttribute('aria-hidden', 'false');
+
+        // remember: only show intro once
+        try { localStorage.setItem('smh_entered', '1'); } catch (e) {}
+
+        // after logo animation finishes, enable settled state
+        setTimeout(function () {
+          document.body.classList.add('settled');
+        }, 750);
       }
-      togglePeek();
-    });
 
-    // tapping outside closes peek (touch/mobile only)
-    document.addEventListener('click', (e) => {
-      if (!isTouchLike) return;
-      if (!document.body.classList.contains('logo-peek')) return;
-      if (btn.contains(e.target)) return;
-      togglePeek(false);
-    });
+      function togglePeek(force) {
+        if (!isTouchLike) return;
+        if (!document.body.classList.contains('settled')) return;
 
-    // Esc closes peek (optional)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') togglePeek(false);
-    });
+        if (typeof force === "boolean") {
+          if (force) document.body.classList.add('logo-peek');
+          else document.body.classList.remove('logo-peek');
+        } else {
+          document.body.classList.toggle('logo-peek');
+        }
+      }
+
+      // click: first click enters; later clicks toggle peek ONLY on touch/mobile
+      if (btn) {
+        btn.addEventListener('click', function () {
+          if (!document.body.classList.contains('entered')) {
+            enter();
+            return;
+          }
+          togglePeek();
+        });
+      }
+
+      // tapping outside closes peek (touch/mobile only)
+      document.addEventListener('click', function (e) {
+        if (!isTouchLike) return;
+        if (!document.body.classList.contains('logo-peek')) return;
+        if (btn && btn.contains(e.target)) return;
+        togglePeek(false);
+      });
+
+      // Esc closes peek (optional)
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') togglePeek(false);
+      });
+    })();
   </script>
 </body>
 </html>
